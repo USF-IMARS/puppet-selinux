@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "selinux::filecontext" do
+describe "selinux_thias::filecontext" do
   let(:title) { '/www' }
   let(:params) { {
     :seltype => "httpd_sys_content_t",
@@ -17,7 +17,7 @@ describe "selinux::filecontext" do
   end
   context "when selinux is not enabled", :compile do
     let(:facts) {{
-      :selinux => false,
+      :selinux_thias => false,
       :selinux_enforced => false
     }}
     it { should_not contain_exec("semanage_fcontext_httpd_sys_content_t_/www") }

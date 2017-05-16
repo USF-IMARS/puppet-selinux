@@ -1,15 +1,15 @@
-# define: selinux::filecontext
+# define: selinux_thias::filecontext
 #
 # Change SELinux file security context.
 #
-define selinux::filecontext (
+define selinux_thias::filecontext (
   $seltype,
   $object  = $title,
   $recurse = false,
   $copy    = false,
 ) {
 
-  if $::selinux {
+  if $::selinux_thias {
 
     $target = $recurse ? {
       true  => "${object}(/.*)?",

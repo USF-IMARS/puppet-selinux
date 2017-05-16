@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "selinux::dircontext" do
+describe "selinux_thias::dircontext" do
   let(:title) { '/www' }
   let(:params) { {
     :seltype => "httpd_sys_content_t",

@@ -7,19 +7,19 @@
 # never conflict with modules from the currently loaded policy.
 # You can get a list of existing loaded modules with : semodule -l
 #
-define selinux::audit2allow (
+define selinux_thias::audit2allow (
   $ensure  = 'present',
   $content = undef,
   $source  = undef,
 ) {
 
-  include '::selinux'
+  include '::selinux_thias'
 
-  $concat = $::selinux::concat
+  $concat = $::selinux_thias::concat
 
   if $concat == false {
 
-    selinux::audit2allow_single { $title:
+    selinux_thias::audit2allow_single { $title:
       ensure  => $ensure,
       content => $content,
       source  => $source,
@@ -30,7 +30,7 @@ define selinux::audit2allow (
 
     if $ensure != 'absent' {
 
-      realize Selinux::Audit2allow_single['audit2allow']
+      realize Selinux_thias::Audit2allow_single['audit2allow']
       # concat fragment
       concat::fragment{ "audit2allow ${title}":
         target  => '/etc/selinux/local/audit2allow/messages',
@@ -39,10 +39,10 @@ define selinux::audit2allow (
       }
 
       # For when switching to concat, remove the non-concat
-      selinux::audit2allow_single { $title:
+      selinux_thias::audit2allow_single { $title:
         ensure  => 'absent',
         # Make sure we have changes at all times
-        require => Selinux::Audit2allow_single['audit2allow']
+        require => Selinux_thias::Audit2allow_single['audit2allow']
       }
 
     } else {

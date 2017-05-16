@@ -7,11 +7,11 @@
 # never conflict with modules from the currently loaded policy.
 # You can get a list of existing loaded modules with : semodule -l
 #
-define selinux::audit2allow_single (
+define selinux_thias::audit2allow_single (
   $ensure  = 'present',
   $content = undef,
   $source  = undef,
-  $concat  = $::selinux::concat,
+  $concat  = $::selinux_thias::concat,
 ) {
 
   if $ensure == 'absent' {
@@ -20,7 +20,7 @@ define selinux::audit2allow_single (
     exec { "semodule -r local${title}":
       path   => $::path,
       onlyif => "semodule -l | egrep ^local${title}\s",
-    } -> 
+    } ->
 
     # Remove our files and the ones audit2allow creates
     file { "/etc/selinux/local/${title}":
@@ -64,7 +64,7 @@ define selinux::audit2allow_single (
     }
 
     # Work around issue where .te file is corrupt on RHEL7 when "upgrading"
-    if $::selinux::params::rmmod {
+    if $::selinux_thias::params::rmmod {
       $rmmod = "semodule -r local${title}; "
     } else {
       $rmmod = ''

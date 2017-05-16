@@ -1,14 +1,14 @@
 # Main SELinux class to be included on all nodes. If SELinux isn't enabled
 # it does nothing anyway.
 #
-class selinux (
-  $package_audit2allow = $::selinux::params::package_audit2allow,
-  $restorecond         = $::selinux::params::restorecond,
-  $package_restorecond = $::selinux::params::package_restorecond,
+class selinux_thias (
+  $package_audit2allow = $::selinux_thias::params::package_audit2allow,
+  $restorecond         = $::selinux_thias::params::restorecond,
+  $package_restorecond = $::selinux_thias::params::package_restorecond,
   $concat              = false,
-) inherits ::selinux::params {
+) inherits ::selinux_thias::params {
 
-  if $::selinux {
+  if $::selinux_thias {
     package { 'audit2allow':
       ensure => 'installed',
       name   => $package_audit2allow,
@@ -34,7 +34,7 @@ class selinux (
       path    => $::path,
       creates => '/etc/selinux/targeted/contexts/files/file_contexts.local',
     }
-    # The parent directory used from selinux::audit2allow
+    # The parent directory used from selinux_thias::audit2allow
     @file { '/etc/selinux/local':
       ensure  => 'directory',
       owner   => 'root',
@@ -43,7 +43,7 @@ class selinux (
       require => Exec['touch /etc/selinux/targeted/contexts/files/file_contexts.local'],
     }
     # The single module when concat is used
-    @selinux::audit2allow_single { 'audit2allow':
+    @selinux_thias::audit2allow_single { 'audit2allow':
       ensure => 'present',
       concat => $concat,
     }
